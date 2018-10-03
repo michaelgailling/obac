@@ -14,15 +14,42 @@ class ParseContent(HTMLParser):
     def error(self, message):
         pass
 
+    # Overridable -- finish processing of start+end tag: <tag.../>
+    def handle_startendtag(self, tag, attrs):
+        self.handle_starttag(tag, attrs)
+        self.handle_endtag(tag)
+
+    # Overridable -- handle start tag
     def handle_starttag(self, tag, attrs):
-        print("Encountered a start tag:", tag)
+        pass
 
+    # Overridable -- handle end tag
     def handle_endtag(self, tag):
-        print("Encountered an end tag :", tag)
+        pass
 
+    # Overridable -- handle character reference
+    def handle_charref(self, name):
+        pass
+
+    # Overridable -- handle entity reference
+    def handle_entityref(self, name):
+        pass
+
+    # Overridable -- handle data
     def handle_data(self, data):
-        print("Encountered some data  :", data)
+        pass
 
+    # Overridable -- handle comment
+    def handle_comment(self, data):
+        pass
+
+    # Overridable -- handle declaration
+    def handle_decl(self, decl):
+        pass
+
+    # Overridable -- handle processing instruction
+    def handle_pi(self, data):
+        pass
 
 class HtmlScrape(request):
     def __init__(self, parent):
