@@ -9,7 +9,7 @@ import timeit
 # should your path be assigned to an older version of python you must reset it
 # to the version 3.6 installation directory, neglecting this step will result in errors
 
-from PyQt5.QtCore import *
+import PyQt5.QtCore as QtCore
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtWebEngineWidgets import *
@@ -73,7 +73,12 @@ class HtmlScrape:
 class IVWebView(QWebEngineView):
     def __init__(self, parent=None):
         super(IVWebView, self).__init__(parent)
+        self.parent = parent
         self.setUpdatesEnabled(True)
+        self.loadFinished.connect(self.lf)
+
+    def lf(self):
+        print("done")
 
 
 class InfoView(QFrame):
@@ -84,9 +89,7 @@ class InfoView(QFrame):
         # print(self.scraper.html)
 
         self.IVWV = IVWebView(parent=self)
-        self.page = QWebEnginePage()
-        self.page.setUrl(QUrl("http://www.google.com"))
-        self.IVWV.setPage(self.page)
+        self.IVWV.setUrl(QtCore.QUrl("http://www.google.com"))
 
         self.browser_layout = QHBoxLayout()
         self.browser_layout.addWidget(self.IVWV)
@@ -99,7 +102,7 @@ class InfoView(QFrame):
 
     def handle_html(self, *argv):
         print(argv)
-    
+
     def extract_html(self):
         self.page.toHtml(self.HandleHtml)
 
