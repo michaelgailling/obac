@@ -2,10 +2,10 @@ import urllib.request as request
 from html.parser import HTMLParser
 import sys, os
 import timeit
-import numpy as np
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+from PyQt5.QtWebEngineWidgets import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
@@ -63,10 +63,13 @@ class HtmlScrape:
         self.html = html.decode("utf-8")
 
 
+class IVWebView()
+
+
 class InfoView(QFrame):
     def __init__(self, parent=None):
         super(InfoView, self).__init__(parent)
-        scraper = HtmlScrape(parent=self, url="")
+        scraper = HtmlScrape(parent=self, url="http://www.reddit.com")
         print(scraper.html)
 
 
