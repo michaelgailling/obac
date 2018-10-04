@@ -2,14 +2,17 @@ import urllib.request as request    # Default python version 3.6
 from html.parser import HTMLParser  # 
 import sys, os
 import timeit
+
 # The following imports require using the pip install command in the command prompt
 # please ensure your path variable contains the path to your python installation
+#---------------------------------------------------------------------------------------------
 # should your path be assigned to an older version of python you must reset it
 # to the version 3.6 installation directory, neglecting this step will result in errors
 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+from PyQt5.QtWebEngineWidgets import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
@@ -67,11 +70,38 @@ class HtmlScrape:
         self.html = html.decode("utf-8")
 
 
+class IVWebView(QWebEngineView):
+    def __init__(self, parent=None):
+        super(IVWebView, self).__init__(parent)
+        self.setUpdatesEnabled(True)
+
+
 class InfoView(QFrame):
     def __init__(self, parent=None):
         super(InfoView, self).__init__(parent)
-        scraper = HtmlScrape(parent=self, url="")
-        print(scraper.html)
+
+        # self.scraper = HtmlScrape(parent=self, url="http://www.reddit.com")
+        # print(self.scraper.html)
+
+        self.IVWV = IVWebView(parent=self)
+        self.page = QWebEnginePage()
+        self.page.setUrl(QUrl("http://www.google.com"))
+        self.IVWV.setPage(self.page)
+
+        self.browser_layout = QHBoxLayout()
+        self.browser_layout.addWidget(self.IVWV)
+        self.source_layout = QHBoxLayout()
+        self.main_layout = QVBoxLayout()
+
+        self.main_layout.addLayout(self.browser_layout)
+        self.main_layout.addLayout(self.source_layout)
+        self.setLayout(self.main_layout)
+
+    def handle_html(self, *argv):
+        print(argv)
+    
+    def extract_html(self):
+        self.page.toHtml(self.HandleHtml)
 
 
 class IVTabs(QTabWidget):
@@ -123,6 +153,7 @@ class AppWindow(QMainWindow):
 
         self.IVT.new_tab()
         self.show()
+
 
 if __name__ == "__main__":
     qApp = QApplication(sys.argv)
