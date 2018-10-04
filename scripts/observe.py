@@ -1,12 +1,12 @@
-import urllib.request as request
-from html.parser import HTMLParser
+import urllib.request as request    # Default python version 3.6
+from html.parser import HTMLParser  # 
 import sys, os
 import timeit
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtWebEngineWidgets import *
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+import numpy as np                                                                  # The following imports reuire using the pip install command in the command prompt
+from PyQt5.QtCore import *                                                          # please ensure your path variable contains the path to your python installation
+from PyQt5.QtWidgets import *                                                       # should your path be assigned to an older version of python you must reset it
+from PyQt5.QtGui import *                                                           # to the version 3.6 installation directory
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas    # neglecting this step will result in errors
 from matplotlib.figure import Figure
 
 
@@ -63,13 +63,10 @@ class HtmlScrape:
         self.html = html.decode("utf-8")
 
 
-class IVWebView()
-
-
 class InfoView(QFrame):
     def __init__(self, parent=None):
         super(InfoView, self).__init__(parent)
-        scraper = HtmlScrape(parent=self, url="http://www.reddit.com")
+        scraper = HtmlScrape(parent=self, url="")
         print(scraper.html)
 
 
