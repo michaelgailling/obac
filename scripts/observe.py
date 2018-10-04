@@ -59,6 +59,7 @@ class ParseContent(HTMLParser):
         pass
 
 
+# The traditional way of bot scraping sites
 class HtmlScrape:
     def __init__(self, parent=None, url="", header={'User-Agent': 'metaprinter'}):
         parser = ParseContent()
@@ -70,26 +71,24 @@ class HtmlScrape:
         self.html = html.decode("utf-8")
 
 
+
+
 class IVWebView(QWebEngineView):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, url=None):
         super(IVWebView, self).__init__(parent)
         self.parent = parent
         self.setUpdatesEnabled(True)
-        self.loadFinished.connect(self.lf)
-
-    def lf(self):
-        print("done")
+        self.load(QtCore.QUrl(url))
+        self.loadFinished.connect(parent.loading_complete)
 
 
 class InfoView(QFrame):
     def __init__(self, parent=None):
         super(InfoView, self).__init__(parent)
 
-        # self.scraper = HtmlScrape(parent=self, url="http://www.reddit.com")
-        # print(self.scraper.html)
+        self.IVWV = IVWebView(parent=self, url="http://www.google.com")
+        self.page = self.IVWV.page()
 
-        self.IVWV = IVWebView(parent=self)
-        self.IVWV.setUrl(QtCore.QUrl("http://www.google.com"))
 
         self.browser_layout = QHBoxLayout()
         self.browser_layout.addWidget(self.IVWV)
@@ -100,11 +99,12 @@ class InfoView(QFrame):
         self.main_layout.addLayout(self.source_layout)
         self.setLayout(self.main_layout)
 
-    def handle_html(self, *argv):
-        print(argv)
+    def loading_complete(self, *argv):
+        if argv[0]:
+            self.page.toHtml(self.extract_html)
 
-    def extract_html(self):
-        self.page.toHtml(self.HandleHtml)
+    def extract_html(self, *argv):
+        print(argv)
 
 
 class IVTabs(QTabWidget):
