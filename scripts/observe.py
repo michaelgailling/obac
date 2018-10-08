@@ -71,8 +71,6 @@ class HtmlScrape:
         self.html = html.decode("utf-8")
 
 
-
-
 class IVWebView(QWebEngineView):
     def __init__(self, parent=None, url=None):
         super(IVWebView, self).__init__(parent)
@@ -86,17 +84,16 @@ class InfoView(QFrame):
     def __init__(self, parent=None):
         super(InfoView, self).__init__(parent)
 
-        self.IVWV = IVWebView(parent=self, url="http://www.google.com")
+        self.IVWV = IVWebView(parent=self, url="https://www.google.com/")
         self.page = self.IVWV.page()
+        self.source_text = QPlainTextEdit()
+        self.mainViewSplitter = QSplitter(QtCore.Qt.Vertical)
 
-
-        self.browser_layout = QHBoxLayout()
-        self.browser_layout.addWidget(self.IVWV)
-        self.source_layout = QHBoxLayout()
+        self.mainViewSplitter.addWidget(self.IVWV)
+        self.mainViewSplitter.addWidget(self.source_text)
         self.main_layout = QVBoxLayout()
 
-        self.main_layout.addLayout(self.browser_layout)
-        self.main_layout.addLayout(self.source_layout)
+        self.main_layout.addWidget(self.mainViewSplitter)
         self.setLayout(self.main_layout)
 
     def loading_complete(self, *argv):
@@ -104,7 +101,8 @@ class InfoView(QFrame):
             self.page.toHtml(self.extract_html)
 
     def extract_html(self, *argv):
-        print(argv)
+        print(argv[0])
+        self.source_text.setPlainText(argv[0])
 
 
 class IVTabs(QTabWidget):
